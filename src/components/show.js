@@ -7,51 +7,53 @@ class Show extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      book: {}
+      customer: {}
     };
   }
 
   componentDidMount() {
-    axios.get('/api/book/'+this.props.match.params.id)
+    console.log(this.props.match.params.id);
+    axios.get('/api/customer/'+this.props.match.params.id)
       .then(res => {
-        this.setState({ book: res.data });
-        console.log(this.state.book);
+        this.setState({ customer: res.data });
+        console.log(this.state.customer);
       });
   }
 
   delete(id){
     console.log(id);
-    axios.delete('/api/book/'+id)
+    axios.delete('/api/customer/'+id)
       .then((result) => {
         this.props.history.push("/")
       });
   }
 
   render() {
+    console.log(this.state);
     return (
       <div class="container">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">
-              {this.state.book.title}
+              {this.state.customer.name && `${this.state.customer.name.first} ${this.state.customer.name.last}`}
             </h3>
           </div>
           <div class="panel-body">
-            <h4><Link to="/"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Book List</Link></h4>
+            <h4><Link to="/"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> customer List</Link></h4>
             <dl>
-              <dt>ISBN:</dt>
-              <dd>{this.state.book.isbn}</dd>
-              <dt>Author:</dt>
-              <dd>{this.state.book.author}</dd>
-              <dt>Description:</dt>
-              <dd>{this.state.book.description}</dd>
-              <dt>Publish Date:</dt>
-              <dd>{this.state.book.published_year}</dd>
-              <dt>Publisher:</dt>
-              <dd>{this.state.book.publisher}</dd>
+              <dt>CustomerId:</dt>
+              <dd>{this.state.customer.customerID}</dd>
+              <dt>LastContact:</dt>
+              <dd>{this.state.customer.lastContact}</dd>
+              <dt>customerLifetimeValue:</dt>
+              <dd>{this.state.customer.customerLifetimeValue}</dd>
+              <dt>BirthDay:</dt>
+              <dd>{this.state.customer.birthday}</dd>
+              <dt>Gender:</dt>
+              <dd>{this.state.customer.gender}</dd>
             </dl>
-            <Link to={`/edit/${this.state.book._id}`} class="btn btn-success">Edit</Link>&nbsp;
-            <button onClick={this.delete.bind(this, this.state.book._id)} class="btn btn-danger">Delete</button>
+            <Link to={`/edit/${this.state.customer._id}`} class="btn btn-success">Edit</Link>&nbsp;
+            <button onClick={this.delete.bind(this, this.state.customer._id)} class="btn btn-danger">Delete</button>
           </div>
         </div>
       </div>
