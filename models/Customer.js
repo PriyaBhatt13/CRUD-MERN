@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var CustomerSchema = new mongoose.Schema({
-  customerID: { 
+  customerID: {
     type: Number
   },
   name: {
@@ -9,8 +9,8 @@ var CustomerSchema = new mongoose.Schema({
   },
   birthday: { type: Date },
   gender: String,
-  lastContact: { type: Date, default: Date.now },
-  customerLifetimeValue: { type: Date, default: Date.now }  
+  creationDate: {type:Date, default: Date.now},
+  lastContact: { type: Date, default: Date.now }  
 });
 
 module.exports = mongoose.model('Customer', CustomerSchema);

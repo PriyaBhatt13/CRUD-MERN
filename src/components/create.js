@@ -45,12 +45,12 @@ class Create extends Component {
     const { customerId, firstName, lastName, birthday, gender } = this.state;
     const apiUrl = this.props.match.params.id ? `/api/customer/${this.props.match.params.id}` : '/api/customer';
     if(this.props.match.params.id){
-      axios.put(apiUrl, { customerID: customerId, name:{first:firstName, last:lastName}, birthday: new Date(birthday), gender,lastContact: "2017-06-01 23:28:56.782Z",customerLifetimeValue:"2017-06-01 23:28:56.782Z"  })
+      axios.put(apiUrl, { customerID: customerId, name:{first:firstName, last:lastName}, birthday: new Date(birthday), gender, lastContact: new Date()})
       .then((result) => {
         this.props.history.push("/show/"+this.props.match.params.id)
       });      
     }else{
-      axios.post(apiUrl, { customerID: customerId, name:{first:firstName, last:lastName}, birthday: new Date(birthday), gender,lastContact: "2017-06-01 23:28:56.782Z",customerLifetimeValue:"2017-06-01 23:28:56.782Z"  })
+      axios.post(apiUrl, { customerID: customerId, name:{first:firstName, last:lastName}, birthday: new Date(birthday), gender,  lastContact: new Date() })
       .then((result) => {
         this.props.history.push("/")
       });

@@ -5,7 +5,6 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import Edit from './components/Edit';
 import Create from './components/Create';
 import Show from './components/Show';
 

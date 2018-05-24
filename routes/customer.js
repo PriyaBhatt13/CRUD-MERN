@@ -14,10 +14,38 @@ router.get('/', function(req, res, next) {
 /* GET SINGLE Customer BY ID */
 router.get('/:id', function(req, res, next) {
   console.log(req.params.id);
-  Customer.findById(req.params.id, function (err, post) {
+  try{
+    Customer.aggregate([
+      {$match: { "_id": new mongoose.Types.ObjectId(req.params.id)}},
+      {$project: {
+        customerLifetimeValue: {$subtract: ["$lastContact", "$creationDate"]},
+        customerID: 1,
+        name: 1,
+        birthday: 1,
+        gender: 1,
+        lastContact: 1       
+      },
+    }]).exec(function(err,post){
+      try{
+        console.log(post);
+        if (err) {
+          console.log('mongoose', err);
+          return next(err);
+        }
+        res.json(post[0]);
+      }catch(err){
+        console.log('inside catch',err);
+      }
+      
+    })
+  }catch(e){
+    console.log('outside',e);
+  }
+  
+  /*Customer.findById(req.params.id, function (err, post) {
     if (err) return next(err);
     res.json(post);
-  });
+  });*/
 });
 
 /* SAVE Customer */
