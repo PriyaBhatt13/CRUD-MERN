@@ -12,8 +12,26 @@ class Create extends Component {
       firstName: '',
       lastName: '',
       birthday: '',
-      gender: ''
+      gender: '',
+      _id: ''
     };
+  }
+
+  componentDidMount() {
+    if(this.props.match.params.id){
+      axios.get('/api/customer/'+this.props.match.params.id)
+      .then(res => {
+        this.setState({ 
+          customerId: res.data.customerID,
+          firstName: res.data.name.first,
+          lastName: res.data.name.last,
+          birthday: res.data.birthday,
+          gender: res.data.gender,
+          _id: res.data._id
+         });
+        console.log(this.state, res.data);
+      });
+    }    
   }
   onChange = (e) => {
     const state = this.state
@@ -25,16 +43,20 @@ class Create extends Component {
     e.preventDefault();
 
     const { customerId, firstName, lastName, birthday, gender } = this.state;
-
-    axios.post('/api/customer', { customerID: customerId, name:{first:firstName, last:lastName}, birthday: new Date(birthday), gender,lastContact: "2017-06-01 23:28:56.782Z",customerLifetimeValue:"2017-06-01 23:28:56.782Z"  })
+    const apiUrl = this.props.match.params.id ? `/api/customer/${this.props.match.params.id}` : '/api/customer';
+    if(this.props.match.params.id){
+      axios.put(apiUrl, { customerID: customerId, name:{first:firstName, last:lastName}, birthday: new Date(birthday), gender,lastContact: "2017-06-01 23:28:56.782Z",customerLifetimeValue:"2017-06-01 23:28:56.782Z"  })
+      .then((result) => {
+        this.props.history.push("/show/"+this.props.match.params.id)
+      });      
+    }else{
+      axios.post(apiUrl, { customerID: customerId, name:{first:firstName, last:lastName}, birthday: new Date(birthday), gender,lastContact: "2017-06-01 23:28:56.782Z",customerLifetimeValue:"2017-06-01 23:28:56.782Z"  })
       .then((result) => {
         this.props.history.push("/")
       });
-  }
-
-  componentDidMount(){
-    console.log(this.props.match.params.id);
-  }
+    }
+    
+  }  
 
   render() {
     const { customerId, firstName, lastName, birthday, gender } = this.state;
@@ -43,7 +65,7 @@ class Create extends Component {
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">
-              ADD Customer
+              {this.props.match.id ? 'Edit Customer' : 'Add Customer'}
             </h3>
           </div>
           <div class="panel-body">
