@@ -17,8 +17,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'false'}));
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.use('/api/customer', customer);
+app.route("/api/customer")
+  .get(customer.getCustomers)
+  .post(customer.postCustomer);
 
+app.route("/api/customer/:id")
+  .get(customer.getCustomerById)
+  .delete(customer.deleteCustomer)
+  .put(customer.updateCustomer);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
